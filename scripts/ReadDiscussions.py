@@ -24,28 +24,29 @@ class ReadDiscussions(MyCourses):
         :return:
         """
         threads = self.d.find_element_by_xpath('//*[@id="threadDataList"]/ul').find_elements_by_class_name("d2l-inline")
+        title = threads[0].find_element_by_tag_name('a')
+        if title.is_displayed():
+            title.click()
 
         for i in range(len(threads)):
-            threads = self.d.find_element_by_xpath('//*[@id="threadDataList"]/ul').find_elements_by_class_name(
-                "d2l-inline")
-            thread = threads[i]
-            title = thread.find_element_by_tag_name('a')
+            try:
+                text = self.d.find_element_by_xpath('//*[@id="threadContentsPlaceholder"]/div/div[1]/div[1]/p').text
+            except NoSuchElementException:
+                text = ""
 
-            if title.is_displayed():
-                title.click()
-                try:
-                    text = self.d.find_element_by_xpath('//*[@id="threadContentsPlaceholder"]/div/div[1]/div[1]/p').text
-                except NoSuchElementException:
-                    self.d.back()
-                    continue
+            num_words = len(text.split(' '))
+            wpm = randint(200, 250)
+            sleep_time = (num_words * 60) / wpm
+            print("Reading %d words at %d wpm. Approx: %d seconds" % (num_words, wpm, sleep_time))
+            sleep(sleep_time)
 
-                num_words = len(text.split(' '))
-                wpm = randint(200, 250)
-                sleep_time = (num_words * 60) / wpm
-                print("Reading %d words at %d wpm. Approx: %d seconds" % (num_words, wpm, sleep_time))
-                sleep(sleep_time)
-
-                self.d.back()
+            next_button = self.d.find_element_by_xpath(
+                '/html/body/div[9]/div[2]/div[1]/div/div[2]/div/div[2]/div/div/a[2]')
+            if next_button.is_enabled():
+                next_button.click()
+            else:
+                print("All done?")
+                break
 
 
 if __name__ == "__main__":
