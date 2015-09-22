@@ -2,13 +2,15 @@
 
 __author__ = 'kocsenc'
 
-import MyCourses
 import sys
 import os.path
 import time
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+
+# noinspection PyUnresolvedReferences
+from common.MyCourses import MyCourses
 
 
 class EnterGrades(MyCourses):
@@ -179,12 +181,9 @@ class GradeEntry:
 
 if __name__ == "__main__":
     arguments = sys.argv
-    if len(arguments) < 2:
+    if len(arguments) < 2 or not os.path.isfile(arguments[1]):
         print("Usage: \n./EnterGrades.py grade_file.txt")
         sys.exit()
-
-    elif not os.path.isfile(arguments[1]):
-        pass
     else:
         c = EnterGrades(arguments[1])
         c.run()

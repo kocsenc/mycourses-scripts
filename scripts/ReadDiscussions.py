@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 __author__ = 'kocsenc'
 
-import MyCourses
-
-from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 from random import randint
+
+from selenium.common.exceptions import NoSuchElementException
+
+# noinspection PyUnresolvedReferences
+from common.MyCourses import MyCourses
 
 
 class ReadDiscussions(MyCourses):
