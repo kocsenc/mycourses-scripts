@@ -1,8 +1,9 @@
-from selenium.common.exceptions import NoSuchElementException
-
+#!/usr/bin/env python3
 __author__ = 'kocsenc'
 
-from common.MyCourses import MyCourses
+import MyCourses
+
+from selenium.common.exceptions import NoSuchElementException
 from time import sleep
 from random import randint
 
