@@ -38,8 +38,7 @@ class EnterGrades(MyCourses):
         :param entries:
         :return:
         """
-        self.d.get("http://www.mycourses.rit.edu")
-        input("Please log in and navigate to grade entry page and press Enter")
+        input("Please navigate to grade entry page and press Enter")
 
         grade_textboxes = self.d.find_element_by_id("z_p").find_elements_by_class_name("d_edt")
 
