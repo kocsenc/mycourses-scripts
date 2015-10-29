@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import sys
+
 __author__ = 'kocsenc'
 
 from time import sleep
@@ -11,10 +13,11 @@ from common.MyCourses import MyCourses
 
 
 class ReadDiscussions(MyCourses):
-    def __init__(self):
+    def __init__(self, sleep_time):
         super().__init__()
         self.d = self.driver
         self.w = self.wait
+        self.sleep_time_per_post = sleep_time
 
     def run(self):
         while input("Navigate to the discussion then press <ENTER> or q to quit") != 'q':
@@ -38,9 +41,15 @@ class ReadDiscussions(MyCourses):
                 text = ""
 
             num_words = len(text.split(' '))
-            wpm = randint(200, 250)
-            sleep_time = (num_words * 60) / wpm
-            print("Reading %d words at %d wpm. Approx: %d seconds" % (num_words, wpm, sleep_time))
+            if self.sleep_time_per_post:
+                sleep_time = self.sleep_time_per_post
+                print("Reading %d words in %d seconds." % (num_words, sleep_time))
+            else:
+                wpm = randint(200, 250)
+                sleep_time = (num_words * 60) / wpm
+
+                print("Reading %d words at %d wpm. Approx: %d seconds" % (num_words, wpm, sleep_time))
+
             sleep(sleep_time)
 
             next_button = self.d.find_element_by_xpath(
@@ -53,5 +62,11 @@ class ReadDiscussions(MyCourses):
 
 
 if __name__ == "__main__":
-    c = ReadDiscussions()
+    args = sys.argv
+    if len(args) >= 2 and args[1].isdigit():
+        read_time = int(args[1])
+    else:
+        read_time = None
+
+    c = ReadDiscussions(read_time)
     c.run()
